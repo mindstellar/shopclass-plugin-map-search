@@ -1,0 +1,190 @@
+/*
+ * Map Search plugin for Shopclass. SPDX-License-Identifier: GPL-3.0-or-later
+ * A theme restyles the map by setting these variables on .map-search.
+ */
+.map-search {
+  --map-search-height: 360px;
+  --map-search-radius: 8px;
+  --map-search-border: #d4d4d8;
+  --map-search-bg: #f4f4f5;
+  --map-search-fg: #18181b;
+  --map-search-muted: #52525b;
+  --map-search-button-bg: #ffffff;
+  --map-search-button-fg: #18181b;
+  --map-search-focus: #1d4ed8;
+  --map-search-pin: #c2410c;
+  --map-search-cluster: #1d4ed8;
+  --map-search-cluster-text: #ffffff;
+  --map-search-ring: #ffffff;
+  position: relative;
+  margin: 0 0 1rem;
+  color: var(--map-search-fg);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]):not([data-bs-theme="light"]) .map-search {
+    --map-search-border: #3f3f46;
+    --map-search-bg: #27272a;
+    --map-search-fg: #f4f4f5;
+    --map-search-muted: #a1a1aa;
+    --map-search-button-bg: #18181b;
+    --map-search-button-fg: #f4f4f5;
+    --map-search-focus: #93c5fd;
+    --map-search-pin: #fb923c;
+    --map-search-cluster: #60a5fa;
+    --map-search-cluster-text: #0b1220;
+    --map-search-ring: #18181b;
+  }
+}
+
+:root[data-theme="dark"] .map-search,
+:root[data-bs-theme="dark"] .map-search,
+:root.dark .map-search {
+  --map-search-border: #3f3f46;
+  --map-search-bg: #27272a;
+  --map-search-fg: #f4f4f5;
+  --map-search-muted: #a1a1aa;
+  --map-search-button-bg: #18181b;
+  --map-search-button-fg: #f4f4f5;
+  --map-search-focus: #93c5fd;
+  --map-search-pin: #fb923c;
+  --map-search-cluster: #60a5fa;
+  --map-search-cluster-text: #0b1220;
+  --map-search-ring: #18181b;
+}
+
+.map-search-canvas {
+  height: var(--map-search-height);
+  border: 1px solid var(--map-search-border);
+  border-radius: var(--map-search-radius);
+  background: var(--map-search-bg);
+  overflow: hidden;
+}
+
+.map-search:not(.is-ready) .map-search-canvas {
+  display: none;
+}
+
+.map-search-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 1rem;
+  margin-top: 0.5rem;
+}
+
+.map-search.is-ready .map-search-bar {
+  position: absolute;
+  top: 0.625rem;
+  left: 0.625rem;
+  right: 3.25rem;
+  margin: 0;
+  pointer-events: none;
+}
+
+.map-search-area {
+  pointer-events: auto;
+  display: inline-block;
+  padding: 0.45rem 0.9rem;
+  border: 1px solid var(--map-search-border);
+  border-radius: 999px;
+  background: var(--map-search-button-bg);
+  color: var(--map-search-button-fg);
+  font-weight: 600;
+  text-decoration: none;
+  box-shadow: 0 1px 3px rgb(0 0 0 / 0.2);
+}
+
+.map-search-area[hidden] {
+  display: none;
+}
+
+.map-search-area:hover {
+  text-decoration: underline;
+}
+
+.map-search-area:focus-visible,
+.map-search-list:focus-visible,
+.map-search-popup:focus-visible,
+.map-search .maplibregl-canvas:focus-visible {
+  outline: 3px solid var(--map-search-focus);
+  outline-offset: 2px;
+}
+
+.map-search-status {
+  margin: 0;
+  padding: 0.2rem 0.5rem;
+  border-radius: 4px;
+  background: var(--map-search-button-bg);
+  color: var(--map-search-muted);
+  font-size: 0.875rem;
+}
+
+.map-search-status:empty {
+  display: none;
+}
+
+.map-search-list {
+  display: inline-block;
+  margin-top: 0.5rem;
+  color: inherit;
+  font-size: 0.875rem;
+}
+
+.map-search.is-ready .map-search-list {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+.map-search.is-ready .map-search-list:focus {
+  position: static;
+  width: auto;
+  height: auto;
+  clip: auto;
+}
+
+.map-search-popup {
+  display: flex;
+  gap: 0.6rem;
+  align-items: flex-start;
+  color: #18181b;
+  text-decoration: none;
+}
+
+.map-search-popup img {
+  flex: none;
+  width: 64px;
+  height: 64px;
+  object-fit: cover;
+  border-radius: 4px;
+}
+
+.map-search-popup-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  min-width: 0;
+}
+
+.map-search-popup strong {
+  font-size: 0.9rem;
+  line-height: 1.3;
+}
+
+a.map-search-popup:hover strong {
+  text-decoration: underline;
+}
+
+.map-search-popup small {
+  color: #52525b;
+}
+
+@media (max-width: 600px) {
+  .map-search {
+    --map-search-height: 280px;
+  }
+}
