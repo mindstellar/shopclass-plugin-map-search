@@ -147,6 +147,10 @@
   clip: auto;
 }
 
+.map-search .maplibregl-popup-content {
+  padding-right: 1.75rem;
+}
+
 .map-search-popup {
   display: flex;
   gap: 0.6rem;
