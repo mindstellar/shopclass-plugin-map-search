@@ -148,5 +148,28 @@ t('pin event: a bad url is sent empty', () => {
   assert.strictEqual(url, '');
 });
 
+function fakeEl(vars, dark) {
+  const doc = {
+    createElement: () => ({ style: { set color(v) { this._c = v; }, get color() { return this._c; } } }),
+    defaultView: {
+      getComputedStyle: (n) => n.style
+        ? { color: n.style.color === 'light-dark(#111, #eee)' ? (dark ? 'rgb(238, 238, 238)' : 'rgb(17, 17, 17)') : n.style.color }
+        : { getPropertyValue: (k) => vars[k] || '' }
+    }
+  };
+  return { ownerDocument: doc, appendChild() {}, removeChild() {} };
+}
+
+t('colour: reads the custom property, light and dark', () => {
+  const v = { '--map-search-pin': 'light-dark(#111, #eee)' };
+  assert.strictEqual(m.colour(fakeEl(v, false), '--map-search-pin', '#c2410c'), 'rgb(17, 17, 17)');
+  assert.strictEqual(m.colour(fakeEl(v, true), '--map-search-pin', '#c2410c'), 'rgb(238, 238, 238)');
+});
+
+t('colour: unset or invalid gives the fallback', () => {
+  assert.strictEqual(m.colour(fakeEl({}, false), '--map-search-pin', '#c2410c'), '#c2410c');
+  assert.strictEqual(m.colour(fakeEl({ '--map-search-pin': '' }, false), '--map-search-pin', '#abc'), '#abc');
+});
+
 console.log('\nRESULT: ' + pass + ' passed, ' + fail + ' failed');
 process.exit(fail ? 1 : 0);

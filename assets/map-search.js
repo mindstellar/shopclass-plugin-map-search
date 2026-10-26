@@ -216,9 +216,35 @@
     return true;
   }
 
+  /** A colour as plain rgb: the map cannot read light-dark(), color-mix() or oklab values. */
+  function plainRgb(doc, css) {
+    try {
+      var cv = doc.createElement('canvas');
+      cv.width = cv.height = 1;
+      var cx = cv.getContext('2d');
+      cx.fillStyle = '#000';
+      cx.fillStyle = css;
+      cx.fillRect(0, 0, 1, 1);
+      var d = cx.getImageData(0, 0, 1, 1).data;
+      return d[3] === 255 ? 'rgb(' + d[0] + ',' + d[1] + ',' + d[2] + ')' : 'rgba(' + d[0] + ',' + d[1] + ',' + d[2] + ',' + (d[3] / 255).toFixed(3) + ')';
+    } catch (e) {
+      return css;
+    }
+  }
+
+  /** The colour a custom property gives on el, for the scheme el is in; the fallback when it gives none. */
   function colour(el, name, fallback) {
-    var v = getComputedStyle(el).getPropertyValue(name).trim();
-    return v || fallback;
+    var doc = el.ownerDocument;
+    var win = doc.defaultView;
+    var v = win.getComputedStyle(el).getPropertyValue(name).trim();
+    if (!v) return fallback;
+    var probe = doc.createElement('span');
+    probe.style.color = v;
+    if (!probe.style.color) return fallback;
+    el.appendChild(probe);
+    var resolved = win.getComputedStyle(probe).color;
+    el.removeChild(probe);
+    return resolved ? plainRgb(doc, resolved) : fallback;
   }
 
   function init(el) {
@@ -468,6 +494,7 @@
     geojson: geojson,
     safeUrl: safeUrl,
     styleFont: styleFont,
-    isDark: isDark
+    isDark: isDark,
+    colour: colour
   };
 });
