@@ -45,7 +45,6 @@ return array(
                     'maxlength' => Config::URL_MAX,
                     'default'   => Config::STYLE_DEFAULT,
                     'required'  => true,
-                    'purify'    => false,
                     'validate'  => array(Plugin::class, 'validateStyle'),
                 ),
                 array(
@@ -55,7 +54,6 @@ return array(
                     'help'      => __('Used when the page is in dark mode. Leave empty to use the style above.', 'map-search'),
                     'maxlength' => Config::URL_MAX,
                     'default'   => Config::DARK_STYLE_DEFAULT,
-                    'purify'    => false,
                     'validate'  => array(Plugin::class, 'validateDarkStyle'),
                 ),
                 array(
