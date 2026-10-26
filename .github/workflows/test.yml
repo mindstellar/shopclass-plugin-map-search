@@ -1,0 +1,41 @@
+# Runs the unit tests on every push and pull request. They need no database and no
+# network, and read core's BoxFilter from a checkout of core develop (Shopclass 7.1).
+name: test
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - php: '8.3'
+            core: develop
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          coverage: none
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Check out core, whose BoxFilter the tests load
+        uses: actions/checkout@v4
+        with:
+          repository: mindstellar/shopclass
+          ref: ${{ matrix.core }}
+          path: core
+
+      - name: Run the tests
+        run: SHOPCLASS_CORE="$PWD/core" ./tests/run.sh

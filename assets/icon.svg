@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" role="img" aria-label="Map Search">
+  <rect width="128" height="128" rx="24" fill="#1d4ed8"/>
+  <path d="M24 38l26-10 28 10 26-10v62l-26 10-28-10-26 10z" fill="#dbe7ff"/>
+  <path d="M50 28v62M78 38v62" stroke="#1d4ed8" stroke-width="3" fill="none"/>
+  <path d="M64 30c-11 0-19 8-19 18 0 14 19 34 19 34s19-20 19-34c0-10-8-18-19-18z" fill="#c2410c"/>
+  <circle cx="64" cy="48" r="7" fill="#fff"/>
+</svg>

@@ -1,0 +1,23 @@
+{
+  "$schema": "../schema/package.schema.json",
+  "slug": "map-search",
+  "type": "plugin",
+  "modes": ["classifieds", "shop"],
+  "categories": [
+    "search"
+  ],
+  "tags": [
+    "map",
+    "search",
+    "maplibre",
+    "openstreetmap",
+    "location"
+  ],
+  "short_description": "A map of listings on the search page, with pin clusters and a \"Search this area\" button. Free OpenFreeMap tiles by default, no key.",
+  "icon": "assets/icon.svg",
+  "license": "GPL-3.0-or-later",
+  "support": {
+    "issues": "https://github.com/mindstellar/shopclass-plugin-map-search/issues",
+    "docs": "https://github.com/mindstellar/shopclass-plugin-map-search#readme"
+  }
+}
