@@ -55,6 +55,8 @@ Options: `class` (extra class names), `center` (`array(lat, lng)`), `zoom`, `sea
 osc_add_filter('map_search_auto_place', static fn () => false);
 ```
 
+A pin click fires a cancelable `map-search:pin` event on the map (`detail`: `id`, `url`, `title`); call `preventDefault()` to open the listing your own way instead of the card.
+
 Style it with CSS variables on `.map-search`: `--map-search-height`, `--map-search-radius`, `--map-search-pin`, `--map-search-cluster`, `--map-search-cluster-text`, `--map-search-ring`, `--map-search-button-bg`, `--map-search-button-fg`, `--map-search-focus` and others in `assets/map-search.css`.
 
 ## Notes

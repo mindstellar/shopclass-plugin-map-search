@@ -169,6 +169,19 @@
     return box;
   }
 
+  /**
+   * Tell the page a pin was clicked: a cancelable 'map-search:pin' event on the map, with the
+   * listing's id, url and title. False when a listener called preventDefault, so no popup opens.
+   */
+  function pinEvent(el, p, base) {
+    var ev = new CustomEvent('map-search:pin', {
+      bubbles: true,
+      cancelable: true,
+      detail: { id: p.id, url: safeUrl(p.url, base), title: String(p.title || '') }
+    });
+    return el.dispatchEvent(ev);
+  }
+
   /** How the map opens: the search's box, a near point, the admin's centre, else fit to the listings. */
   function startPlan(cfg) {
     if (Array.isArray(cfg.box) && cfg.box.length === 4) {
@@ -397,6 +410,7 @@
       var f = e.features && e.features[0];
       if (!f) return;
       if (popup) popup.remove();
+      if (!pinEvent(el, f.properties, location.href)) return;
       popup = new gl.Popup({ offset: 12, maxWidth: '280px' })
         .setLngLat(f.geometry.coordinates.slice())
         .setDOMContent(popupNode(f.properties, text))
@@ -445,6 +459,7 @@
   return {
     start: start,
     startPlan: startPlan,
+    pinEvent: pinEvent,
     fitPins: fitPins,
     boxFromBounds: boxFromBounds,
     bboxText: bboxText,

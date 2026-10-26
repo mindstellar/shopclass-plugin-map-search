@@ -128,5 +128,25 @@ t('fit: reduced motion does not animate', () => {
   assert.strictEqual(b.calls[0][0], 'jumpTo');
 });
 
+t('pin event: a listener that cancels it stops the popup', () => {
+  const el = new EventTarget();
+  let got = null;
+  el.addEventListener('map-search:pin', (e) => { got = e.detail; e.preventDefault(); });
+  assert.strictEqual(m.pinEvent(el, { id: 7, url: '/item/7', title: 'Bike' }, 'https://shop.test/'), false);
+  assert.deepStrictEqual(got, { id: 7, url: 'https://shop.test/item/7', title: 'Bike' });
+});
+
+t('pin event: no listener, the popup opens', () => {
+  assert.strictEqual(m.pinEvent(new EventTarget(), { id: 1, url: '/i/1', title: 'A' }, 'https://shop.test/'), true);
+});
+
+t('pin event: a bad url is sent empty', () => {
+  const el = new EventTarget();
+  let url = null;
+  el.addEventListener('map-search:pin', (e) => { url = e.detail.url; });
+  m.pinEvent(el, { id: 1, url: 'javascript:alert(1)', title: 'A' }, 'https://shop.test/');
+  assert.strictEqual(url, '');
+});
+
 console.log('\nRESULT: ' + pass + ' passed, ' + fail + ' failed');
 process.exit(fail ? 1 : 0);

@@ -9,3 +9,4 @@
 - With no centre set, the map zooms to fit the listings on first load; a centre set in the settings wins.
 - Light and dark map styles that follow the page.
 - `map_search_render()` for themes, and the `map_search_auto_place` filter to turn off the search page placement.
+- A cancelable `map-search:pin` event on pin click, so a theme can open the listing itself.
