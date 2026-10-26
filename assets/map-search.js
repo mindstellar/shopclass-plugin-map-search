@@ -175,6 +175,7 @@
     var canvas = el.querySelector('.map-search-canvas');
     var status = el.querySelector('.map-search-status');
     var area = el.querySelector('.map-search-area');
+    var bar = el.querySelector('.map-search-bar');
     var cfg;
     try {
       cfg = JSON.parse(cfgEl.textContent);
@@ -342,6 +343,9 @@
         .setLngLat(f.geometry.coordinates.slice())
         .setDOMContent(popupNode(f.properties, text))
         .addTo(map);
+      var top = (bar ? bar.getBoundingClientRect().bottom : canvas.getBoundingClientRect().top) + 8;
+      var gap = popup.getElement().getBoundingClientRect().top - top;
+      if (gap < 0) map.panBy([0, gap]);
     });
     [SOURCE + '-clusters', SOURCE + '-pins'].forEach(function (id) {
       map.on('mouseenter', id, function () { map.getCanvas().style.cursor = 'pointer'; });
