@@ -19,6 +19,10 @@
 
   var DEBOUNCE = 350;
   var SOURCE = 'map-search';
+  var WORLD = [-180, -90, 180, 90];
+  var FIT_PADDING = 50;
+  var FIT_MAX_ZOOM = 13;
+  var SINGLE_ZOOM = 12;
   var OPS = ['get', 'literal', 'case', 'match', 'coalesce', 'step', 'interpolate', 'concat', 'to-string'];
 
   function round(n, up) {
@@ -165,6 +169,40 @@
     return box;
   }
 
+  /** How the map opens: the search's box, a near point, the admin's centre, else fit to the listings. */
+  function startPlan(cfg) {
+    if (Array.isArray(cfg.box) && cfg.box.length === 4) {
+      var east = cfg.box[2] < cfg.box[0] ? cfg.box[2] + 360 : cfg.box[2];
+      return { mode: 'box', bounds: [[cfg.box[0], cfg.box[1]], [east, cfg.box[3]]] };
+    }
+    if (Array.isArray(cfg.near) && cfg.near.length === 2) {
+      return { mode: 'near', center: [cfg.near[1], cfg.near[0]], zoom: Math.max(cfg.zoom, 9) };
+    }
+    if (Array.isArray(cfg.center) && cfg.center.length === 2) {
+      return { mode: 'centre', center: [cfg.center[1], cfg.center[0]], zoom: cfg.zoom };
+    }
+    return { mode: 'fit', center: [0, 20], zoom: 1.5 };
+  }
+
+  /** Move the map to show the pins. False, and no move, when there are none. */
+  function fitPins(map, pins, reduced) {
+    var w = Infinity, s = Infinity, e = -Infinity, n = -Infinity, count = 0;
+    (pins || []).forEach(function (p) {
+      if (!p || typeof p.lat !== 'number' || typeof p.lng !== 'number') return;
+      count++;
+      w = Math.min(w, p.lng); e = Math.max(e, p.lng);
+      s = Math.min(s, p.lat); n = Math.max(n, p.lat);
+    });
+    if (count === 0) return false;
+    if (w === e && s === n) {
+      var one = { center: [w, s], zoom: SINGLE_ZOOM };
+      if (reduced) map.jumpTo(one); else map.easeTo(one);
+      return true;
+    }
+    map.fitBounds([[w, s], [e, n]], { padding: FIT_PADDING, maxZoom: FIT_MAX_ZOOM, animate: !reduced });
+    return true;
+  }
+
   function colour(el, name, fallback) {
     var v = getComputedStyle(el).getPropertyValue(name).trim();
     return v || fallback;
@@ -194,8 +232,6 @@
     var opts = {
       container: canvas,
       style: styleFor(dark),
-      center: [cfg.center[1], cfg.center[0]],
-      zoom: cfg.zoom,
       attributionControl: false,
       locale: {
         'NavigationControl.ZoomIn': text.zoomIn,
@@ -205,12 +241,12 @@
         'Popup.Close': text.close
       }
     };
-    if (Array.isArray(cfg.box) && cfg.box.length === 4) {
-      var east = cfg.box[2] < cfg.box[0] ? cfg.box[2] + 360 : cfg.box[2];
-      opts.bounds = [[cfg.box[0], cfg.box[1]], [east, cfg.box[3]]];
-    } else if (Array.isArray(cfg.near) && cfg.near.length === 2) {
-      opts.center = [cfg.near[1], cfg.near[0]];
-      opts.zoom = Math.max(cfg.zoom, 9);
+    var plan = startPlan(cfg);
+    if (plan.mode === 'box') {
+      opts.bounds = plan.bounds;
+    } else {
+      opts.center = plan.center;
+      opts.zoom = plan.zoom;
     }
 
     var map;
@@ -227,7 +263,9 @@
     map.addControl(new gl.AttributionControl({ compact: false, customAttribution: cfg.credit }), 'bottom-right');
 
     var data = geojson([]);
-    var startBox = Array.isArray(cfg.box) ? bboxText(cfg.box) : '';
+    var fitting = plan.mode === 'fit';
+    var adoptStart = false;
+    var startBox = Array.isArray(cfg.box) ? bboxText(cfg.box) : (fitting ? bboxText(WORLD) : '');
     var cache = {};
     var keys = [];
     var timer = 0;
@@ -291,8 +329,15 @@
     }
 
     function load() {
-      var b = map.getBounds();
-      var box = boxFromBounds(b.getWest(), b.getSouth(), b.getEast(), b.getNorth());
+      var box = WORLD;
+      if (!fitting) {
+        var b = map.getBounds();
+        box = boxFromBounds(b.getWest(), b.getSouth(), b.getEast(), b.getNorth());
+      }
+      if (adoptStart) {
+        adoptStart = false;
+        startBox = bboxText(box);
+      }
       var href = searchHref(cfg.search, cfg.token, box);
       if (area && href && safeUrl(href, location.href)) {
         area.href = href;
@@ -301,6 +346,7 @@
       var url = pinsUrl(cfg.pins, cfg.params, box, cfg.locale, location.href);
       if (cache[url]) {
         show(cache[url].pins, cache[url].more, cache[url].cap);
+        settleFit(cache[url].pins);
         return;
       }
       if (aborter) aborter.abort();
@@ -313,13 +359,25 @@
           keys.push(url);
           if (keys.length > 30) delete cache[keys.shift()];
           show(d.pins, d.more, d.cap);
+          settleFit(d.pins);
         })
         .catch(function (e) {
-          if (!e || e.name !== 'AbortError') status.textContent = text.error;
+          if (e && e.name === 'AbortError') return;
+          status.textContent = text.error;
+          fitting = false;
         });
     }
 
+    function settleFit(pins) {
+      if (!fitting) return;
+      fitting = false;
+      adoptStart = true;
+      var reduced = !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+      if (!fitPins(map, pins, reduced)) adoptStart = false;
+    }
+
     function later() {
+      if (fitting) return;
       clearTimeout(timer);
       timer = setTimeout(load, DEBOUNCE);
     }
@@ -386,6 +444,8 @@
 
   return {
     start: start,
+    startPlan: startPlan,
+    fitPins: fitPins,
     boxFromBounds: boxFromBounds,
     bboxText: bboxText,
     searchHref: searchHref,

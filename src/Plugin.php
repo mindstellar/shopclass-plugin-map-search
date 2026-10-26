@@ -81,6 +81,20 @@ final class Plugin
         return Config::validKey(trim((string) $value)) ? null : __('Use the key as the provider gives it: letters, digits, dots, dashes and underscores.', 'map-search');
     }
 
+    /** Both centre fields set, or both empty. */
+    public static function validateCentre(array $values, string $pageId = '', mixed $id = null): ?string
+    {
+        $lat = trim((string) ($values['center_lat'] ?? ''));
+        $lng = trim((string) ($values['center_lng'] ?? ''));
+
+        return ($lat === '') === ($lng === '') ? null : __('Set both centre latitude and longitude, or leave both empty.', 'map-search');
+    }
+
+    public static function validateOptionalRange(mixed $value, float $min, float $max): ?string
+    {
+        return trim((string) $value) === '' ? null : self::validateRange($value, $min, $max);
+    }
+
     public static function validateRange(mixed $value, float $min, float $max, bool $whole = false): ?string
     {
         $value = trim((string) $value);

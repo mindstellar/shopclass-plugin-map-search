@@ -79,5 +79,54 @@ t('dark from the page, then the system', () => {
   assert.strictEqual(m.isDark(doc({}), win(true)), true);
 });
 
+const fake = () => {
+  const calls = [];
+  return { calls, fitBounds: (b, o) => calls.push(['fitBounds', b, o]), easeTo: (o) => calls.push(['easeTo', o]), jumpTo: (o) => calls.push(['jumpTo', o]) };
+};
+const pin = (lat, lng) => ({ lat, lng });
+
+t('start order: box, then near, then centre, then fit', () => {
+  const base = { zoom: 2, box: null, near: null, center: null };
+  assert.strictEqual(m.startPlan({ ...base, box: [1, 2, 3, 4], near: [5, 6], center: [7, 8] }).mode, 'box');
+  assert.strictEqual(m.startPlan({ ...base, near: [5, 6], center: [7, 8] }).mode, 'near');
+  assert.deepStrictEqual(m.startPlan({ ...base, near: [5, 6] }).center, [6, 5]);
+  assert.strictEqual(m.startPlan({ ...base, near: [5, 6] }).zoom, 9);
+  assert.deepStrictEqual(m.startPlan({ ...base, center: [19, 72] }), { mode: 'centre', center: [72, 19], zoom: 2 });
+  const fit = m.startPlan(base);
+  assert.strictEqual(fit.mode, 'fit');
+  assert.ok(fit.zoom >= 1 && fit.zoom <= 2);
+});
+
+t('a box across the date line', () => assert.deepStrictEqual(m.startPlan({ box: [170, -10, -170, 10] }).bounds, [[170, -10], [190, 10]]));
+
+t('fit: pins give one fitBounds with padding and a zoom cap', () => {
+  const map = fake();
+  assert.strictEqual(m.fitPins(map, [pin(19, 72), pin(28, 77), pin(18, 73)], false), true);
+  assert.strictEqual(map.calls.length, 1);
+  assert.deepStrictEqual(map.calls[0], ['fitBounds', [[72, 18], [77, 28]], { padding: 50, maxZoom: 13, animate: true }]);
+});
+
+t('fit: one pin zooms to 12', () => {
+  const map = fake();
+  m.fitPins(map, [pin(19, 72), pin(19, 72)], false);
+  assert.deepStrictEqual(map.calls, [['easeTo', { center: [72, 19], zoom: 12 }]]);
+});
+
+t('fit: no pins, no move', () => {
+  const map = fake();
+  assert.strictEqual(m.fitPins(map, [], false), false);
+  assert.strictEqual(m.fitPins(map, [{ lat: 'x', lng: 1 }, null], false), false);
+  assert.strictEqual(map.calls.length, 0);
+});
+
+t('fit: reduced motion does not animate', () => {
+  const a = fake();
+  m.fitPins(a, [pin(1, 1), pin(2, 2)], true);
+  assert.strictEqual(a.calls[0][2].animate, false);
+  const b = fake();
+  m.fitPins(b, [pin(1, 1)], true);
+  assert.strictEqual(b.calls[0][0], 'jumpTo');
+});
+
 console.log('\nRESULT: ' + pass + ' passed, ' + fail + ' failed');
 process.exit(fail ? 1 : 0);

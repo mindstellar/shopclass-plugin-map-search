@@ -24,7 +24,7 @@ Open Settings → General → Map Search. The **Status** line says whether the m
 | Map style address | `https://tiles.openfreemap.org/styles/liberty` | The MapLibre style JSON, over https. OpenFreeMap needs no key. |
 | Dark map style address | `https://tiles.openfreemap.org/styles/dark` | Used when the page is dark. Empty uses the style above. |
 | Provider key | none | For a provider that needs a key. Put `{key}` in the style address where it goes. |
-| Default centre latitude, longitude | 20, 0 | Where the map opens when the search has no place or area. |
+| Default centre latitude, longitude | empty | Empty: the map zooms to fit the listings. Set both to open on a fixed place instead. |
 | Default zoom | 2 | 0 is the world, 18 a street. |
 | Pins per map view | 200 | The most listings loaded at once, 50 to 500. |
 | Show the map above the search results | on | Draws the map on the search page in themes that have a place for it. |

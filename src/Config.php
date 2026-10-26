@@ -32,9 +32,6 @@ final class Config
     public const ZOOM_MIN     = 0;
     public const ZOOM_MAX     = 18;
 
-    public const LAT_DEFAULT = 20.0;
-    public const LNG_DEFAULT = 0.0;
-
     /** Longest style address taken. */
     public const URL_MAX = 500;
 
@@ -80,18 +77,18 @@ final class Config
         return str_replace(self::KEY_PLACEHOLDER, rawurlencode(self::apiKey()), $url);
     }
 
-    /** @return array{0:float,1:float} latitude, longitude */
-    public static function centre(): array
+    /** @return array{0:float,1:float}|null latitude, longitude; null when the admin set none (fit to the listings) */
+    public static function centre(): ?array
     {
-        return array(
-            self::number('center_lat', -90.0, 90.0, self::LAT_DEFAULT),
-            self::number('center_lng', -180.0, 180.0, self::LNG_DEFAULT),
-        );
+        $lat = self::number('center_lat', -90.0, 90.0);
+        $lng = self::number('center_lng', -180.0, 180.0);
+
+        return $lat === null || $lng === null ? null : array($lat, $lng);
     }
 
     public static function zoom(): float
     {
-        return self::number('zoom', self::ZOOM_MIN, self::ZOOM_MAX, self::ZOOM_DEFAULT);
+        return self::number('zoom', self::ZOOM_MIN, self::ZOOM_MAX) ?? (float) self::ZOOM_DEFAULT;
     }
 
     public static function maxPins(): int
@@ -142,15 +139,15 @@ final class Config
         return preg_match('/^[A-Za-z0-9._~-]{0,200}$/', $key) === 1;
     }
 
-    private static function number(string $name, float $min, float $max, float $default): float
+    private static function number(string $name, float $min, float $max): ?float
     {
         $value = self::value($name);
         if (!is_numeric($value)) {
-            return $default;
+            return null;
         }
         $value = (float) $value;
 
-        return $value < $min || $value > $max ? $default : $value;
+        return $value < $min || $value > $max ? null : $value;
     }
 
     private static function value(string $name): mixed

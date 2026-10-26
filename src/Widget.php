@@ -86,12 +86,12 @@ final class Widget
      */
     public static function config(array $opts, array $params, array $page): array
     {
-        [$lat, $lng] = Config::centre();
-        $zoom        = Config::zoom();
+        $centre = Config::centre();
+        $zoom   = Config::zoom();
         if (isset($opts['center']) && is_array($opts['center']) && count($opts['center']) === 2) {
             [$oLat, $oLng] = array_values($opts['center']);
             if (is_numeric($oLat) && is_numeric($oLng) && abs((float) $oLat) <= 90 && abs((float) $oLng) <= 180) {
-                [$lat, $lng] = array((float) $oLat, (float) $oLng);
+                $centre = array((float) $oLat, (float) $oLng);
             }
         }
         if (isset($opts['zoom']) && is_numeric($opts['zoom'])) {
@@ -107,7 +107,7 @@ final class Widget
             'token'     => self::BOX_TOKEN,
             'params'    => $params,
             'locale'    => (string) ($page['locale'] ?? ''),
-            'center'    => array($lat, $lng),
+            'center'    => $centre,
             'zoom'      => $zoom,
             'box'       => is_array($page['box'] ?? null) ? array_map('floatval', array_values($page['box'])) : null,
             'near'      => is_array($page['near'] ?? null) ? array_map('floatval', array_values($page['near'])) : null,

@@ -8,15 +8,15 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "Language: \n"
 
-#: settings.php:90
+#: settings.php:88
 msgid "-180 to 180."
 msgstr ""
 
-#: settings.php:99
+#: settings.php:96
 msgid "0 shows the world, 18 a street."
 msgstr ""
 
-#: settings.php:44
+#: settings.php:45
 msgid "A MapLibre style JSON over https. The default is OpenFreeMap, which needs no key. For a provider with a key, put {key} where the key goes."
 msgstr ""
 
@@ -36,16 +36,20 @@ msgstr ""
 msgid "Dark map style address"
 msgstr ""
 
-#: settings.php:80
+#: settings.php:79
 msgid "Default centre latitude"
 msgstr ""
 
-#: settings.php:89
+#: settings.php:87
 msgid "Default centre longitude"
 msgstr ""
 
-#: settings.php:98
+#: settings.php:95
 msgid "Default zoom"
+msgstr ""
+
+#: settings.php:80
+msgid "Leave both centre fields empty and the map zooms to fit the listings. Otherwise -90 to 90."
 msgstr ""
 
 #: src/Widget.php:129
@@ -56,7 +60,7 @@ msgstr ""
 msgid "Loading listings…"
 msgstr ""
 
-#: settings.php:32
+#: settings.php:33
 msgid "Map"
 msgstr ""
 
@@ -76,15 +80,15 @@ msgstr ""
 msgid "Map of listings"
 msgstr ""
 
-#: settings.php:43
+#: settings.php:44
 msgid "Map style address"
 msgstr ""
 
-#: settings.php:38
+#: settings.php:39
 msgid "Map tiles"
 msgstr ""
 
-#: settings.php:75
+#: settings.php:74
 msgid "Map view"
 msgstr ""
 
@@ -92,15 +96,15 @@ msgstr ""
 msgid "No listings in this part of the map."
 msgstr ""
 
-#: settings.php:65
+#: settings.php:64
 msgid "Only for a provider that needs one. It goes in place of {key} and is sent to every visitor's browser, so use a key limited to your site's address. Leave the box blank to keep the saved key."
 msgstr ""
 
-#: settings.php:107
+#: settings.php:104
 msgid "Pins per map view"
 msgstr ""
 
-#: settings.php:64
+#: settings.php:63
 msgid "Provider key"
 msgstr ""
 
@@ -112,19 +116,23 @@ msgstr ""
 msgid "Search this area"
 msgstr ""
 
+#: src/Plugin.php:90
+msgid "Set both centre latitude and longitude, or leave both empty."
+msgstr ""
+
 #: src/Widget.php:127
 msgid "Show the listings as a list"
 msgstr ""
 
-#: settings.php:121
+#: settings.php:118
 msgid "Show the map above the search results"
 msgstr ""
 
-#: settings.php:27
+#: settings.php:28
 msgid "Status"
 msgstr ""
 
-#: src/Plugin.php:124
+#: src/Plugin.php:138
 msgid "The OpenStreetMap tile servers are not for sites like this one. Use OpenFreeMap or another provider."
 msgstr ""
 
@@ -132,19 +140,19 @@ msgstr ""
 msgid "The map could not load listings. Try again later."
 msgstr ""
 
-#: src/Plugin.php:101
+#: src/Plugin.php:115
 msgid "The map does not show: distance search is off. Turn it on under Settings → General."
 msgstr ""
 
-#: src/Plugin.php:104
+#: src/Plugin.php:118
 msgid "The map does not show: no live listing has a map position yet. A listing gets one from its city or region, or from its address when an address lookup plugin is set up."
 msgstr ""
 
-#: src/Plugin.php:108
+#: src/Plugin.php:122
 msgid "The map is on. It shows above the search results, and where your theme calls map_search_render()."
 msgstr ""
 
-#: src/Plugin.php:109
+#: src/Plugin.php:123
 msgid "The map is on. It shows where your theme calls map_search_render()."
 msgstr ""
 
@@ -152,15 +160,15 @@ msgstr ""
 msgid "The map shows the first %d listings here. Zoom in to see the rest."
 msgstr ""
 
-#: settings.php:108
+#: settings.php:105
 msgid "The most listings the map loads at once, 50 to 500. Fewer is faster."
 msgstr ""
 
-#: src/Plugin.php:90
+#: src/Plugin.php:104
 msgid "Use a number from %1$s to %2$s."
 msgstr ""
 
-#: src/Plugin.php:127
+#: src/Plugin.php:141
 msgid "Use the https address of a MapLibre style JSON."
 msgstr ""
 
@@ -172,15 +180,11 @@ msgstr ""
 msgid "Used when the page is in dark mode. Leave empty to use the style above."
 msgstr ""
 
-#: settings.php:116
+#: settings.php:113
 msgid "Where it shows"
 msgstr ""
 
-#: settings.php:81
-msgid "Where the map opens when the search has no place or area. -90 to 90."
-msgstr ""
-
-#: settings.php:122
+#: settings.php:119
 msgid "Works with themes that have a place for it there. Other themes show the map where they call map_search_render()."
 msgstr ""
 

@@ -22,6 +22,7 @@ return array(
     'menu'   => 'settings',
     'group'  => 'general',
     'intro'  => __('A map of listings on the search page. Visitors move the map and press "Search this area" to see the listings in it.', 'map-search'),
+    'validate' => array(Plugin::class, 'validateCentre'),
     'groups' => array(
         array(
             'title'  => __('Status', 'map-search'),
@@ -76,19 +77,17 @@ return array(
                     'type'     => 'number',
                     'name'     => 'center_lat',
                     'label'    => __('Default centre latitude', 'map-search'),
-                    'help'     => __('Where the map opens when the search has no place or area. -90 to 90.', 'map-search'),
-                    'default'  => (string) Config::LAT_DEFAULT,
+                    'help'     => __('Leave both centre fields empty and the map zooms to fit the listings. Otherwise -90 to 90.', 'map-search'),
                     'attrs'    => array('min' => '-90', 'max' => '90', 'step' => 'any'),
-                    'validate' => static fn ($value) => Plugin::validateRange($value, -90, 90),
+                    'validate' => static fn ($value) => Plugin::validateOptionalRange($value, -90, 90),
                 ),
                 array(
                     'type'     => 'number',
                     'name'     => 'center_lng',
                     'label'    => __('Default centre longitude', 'map-search'),
                     'help'     => __('-180 to 180.', 'map-search'),
-                    'default'  => (string) Config::LNG_DEFAULT,
                     'attrs'    => array('min' => '-180', 'max' => '180', 'step' => 'any'),
-                    'validate' => static fn ($value) => Plugin::validateRange($value, -180, 180),
+                    'validate' => static fn ($value) => Plugin::validateOptionalRange($value, -180, 180),
                 ),
                 array(
                     'type'     => 'number',
