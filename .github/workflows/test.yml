@@ -18,6 +18,8 @@ jobs:
         include:
           - php: '8.2'
             core: develop
+          - php: '8.5'
+            core: develop
     steps:
       - uses: actions/checkout@v4
 
