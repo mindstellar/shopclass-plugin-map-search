@@ -2,6 +2,8 @@
 
 Adds a map of listings to the search page. Pins group into clusters, a pin opens a card with the photo, title, price and a link, and **Search this area** shows the listings in the part of the map on screen.
 
+![The map above the search results](assets/screenshot-1.png)
+
 ## Requirements
 
 - Shopclass 7.1.0 or later
