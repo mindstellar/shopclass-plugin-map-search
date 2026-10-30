@@ -3,7 +3,7 @@
 Plugin Name: Map Search
 Plugin URI: https://github.com/mindstellar/shopclass-plugin-map-search
 Description: A map of listings on the search page, with pin clusters and a "Search this area" button. Uses free OpenFreeMap tiles by default, with no key.
-Version: 0.1.0
+Version: 0.1.1
 Author: Navjot Tomer (Mindstellar)
 Author URI: https://mindstellar.com
 Short Name: map-search

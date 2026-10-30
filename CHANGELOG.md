@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.1.1
+
+### Fixed
+- On a narrow map the credits fold behind the info button, so they no longer cover the map.
+
 ## 0.1.0
 
 ### New
