@@ -69,6 +69,17 @@
     }
   }
 
+  // No `compact`: MapLibre folds the credits behind a button on a map 640 px wide or less.
+  function creditOptions(credit) {
+    return { customAttribution: credit };
+  }
+
+  // A narrow map shows its credits at first; fold them as MapLibre does when the map is moved.
+  function foldCredit(container) {
+    var shown = container.querySelector('.maplibregl-compact-show');
+    if (shown) shown.classList.remove('maplibregl-compact-show');
+  }
+
   function searchHref(template, token, box) {
     if (!template || !token || template.indexOf(token) === -1) return '';
     return template.split(token).join(bboxText(box));
@@ -299,7 +310,8 @@
     }
     map.getCanvas().setAttribute('aria-label', text.map || '');
     map.addControl(new gl.NavigationControl({ showCompass: false }), 'top-right');
-    map.addControl(new gl.AttributionControl({ compact: false, customAttribution: cfg.credit }), 'bottom-right');
+    map.addControl(new gl.AttributionControl(creditOptions(cfg.credit)), 'bottom-right');
+    setTimeout(function () { foldCredit(el); }, 5000);
 
     var data = geojson([]);
     var fitting = plan.mode === 'fit';
@@ -490,6 +502,8 @@
     boxFromBounds: boxFromBounds,
     bboxText: bboxText,
     searchHref: searchHref,
+    creditOptions: creditOptions,
+    foldCredit: foldCredit,
     pinsUrl: pinsUrl,
     geojson: geojson,
     safeUrl: safeUrl,

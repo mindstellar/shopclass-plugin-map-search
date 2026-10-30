@@ -172,4 +172,12 @@ t('colour: unset or invalid gives the fallback', () => {
 });
 
 console.log('\nRESULT: ' + pass + ' passed, ' + fail + ' failed');
+t('the credit line folds on a narrow map', () => assert.deepStrictEqual(m.creditOptions('© OSM'), { customAttribution: '© OSM' }));
+t('a shown credit folds after a while', () => {
+  const cls = new Set(['maplibregl-compact', 'maplibregl-compact-show']);
+  const box = { querySelector: (sel) => (sel === '.maplibregl-compact-show' && cls.has('maplibregl-compact-show') ? { classList: { remove: (c) => cls.delete(c) } } : null) };
+  m.foldCredit(box);
+  assert.deepStrictEqual([...cls], ['maplibregl-compact']);
+});
+
 process.exit(fail ? 1 : 0);
