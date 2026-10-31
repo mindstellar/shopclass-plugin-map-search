@@ -51,15 +51,17 @@ final class Plugin
     /** The `search_ads_listing_top` hook: the map above the results, on the search page only. */
     public static function autoPlace(): void
     {
-        if (!self::autoPlaces(function_exists('osc_is_search_page') && osc_is_search_page())) {
+        // An empty search with no map area gets no map; with an area the visitor needs it to widen the search.
+        $useful = (int) osc_search_total_items() > 0 || osc_search_bbox() !== null;
+        if (!self::autoPlaces(function_exists('osc_is_search_page') && osc_is_search_page(), $useful)) {
             return;
         }
         echo Widget::render();
     }
 
-    public static function autoPlaces(bool $searchPage): bool
+    public static function autoPlaces(bool $searchPage, bool $useful = true): bool
     {
-        return $searchPage && Config::onSearchPage() && (bool) osc_apply_filter(self::AUTO_FILTER, true);
+        return $searchPage && $useful && Config::onSearchPage() && (bool) osc_apply_filter(self::AUTO_FILTER, true);
     }
 
     /** Settings check: the light style address. */

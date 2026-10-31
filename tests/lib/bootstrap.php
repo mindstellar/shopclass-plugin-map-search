@@ -78,6 +78,10 @@ function osc_search_bbox()
 {
     return $GLOBALS['view']['bbox'];
 }
+function osc_search_total_items()
+{
+    return $GLOBALS['view']['total'] ?? 5;
+}
 function osc_search_near()
 {
     return $GLOBALS['view']['near'];
