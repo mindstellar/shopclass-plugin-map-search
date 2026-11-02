@@ -15,10 +15,9 @@ require __DIR__ . '/lib/bootstrap.php';
 use mindstellar\mapsearch\Plugin;
 use mindstellar\settings\SettingsPageRegistry;
 
-$classes = $core . '/oc-includes/osclass/classes/';
-spl_autoload_register(static function (string $class) use ($classes): void {
+spl_autoload_register(static function (string $class) use ($core): void {
     if (strncmp($class, 'mindstellar\\', 12) === 0) {
-        $file = $classes . str_replace('\\', '/', substr($class, 12)) . '.php';
+        $file = core_class_file($core, str_replace('\\', '/', substr($class, 12)) . '.php');
         if (is_file($file)) {
             require $file;
         }

@@ -21,7 +21,7 @@ error_reporting(E_ALL);
 define('ABS_PATH', '/x/');
 
 $core = rtrim((string) (getenv('SHOPCLASS_CORE') ?: dirname(__DIR__, 2) . '/../osclass'), '/');
-$box  = $core . '/oc-includes/osclass/classes/search/query/BoxFilter.php';
+$box  = core_class_file($core, 'search/query/BoxFilter.php');
 if (!is_file($box)) {
     fwrite(STDERR, "Core's BoxFilter is not at $box. Set SHOPCLASS_CORE to a Shopclass 7.1 checkout.\n");
     exit(1);
