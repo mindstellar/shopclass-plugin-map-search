@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.1.2
+
+### Fixed
+- The search page shows no map when a search finds nothing, unless the search is a map area.
+
 ## 0.1.1
 
 ### Fixed
