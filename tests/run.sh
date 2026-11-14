@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Unit tests: no database, no network. Core's BoxFilter is read from
-# SHOPCLASS_CORE, or ../osclass; it must be a Shopclass 7.1 checkout.
+# SHOPCLASS_CORE, or ../shopclass; it must be a Shopclass 7.1 checkout.
 set -u
 cd "$(dirname "$0")/.."
 fail=0

@@ -71,7 +71,7 @@ Style it with CSS variables on `.map-search`: `--map-search-height`, `--map-sear
 
 ## For developers
 
-Run the tests with `./tests/run.sh` (PHP and Node, no database or network). They read core's `BoxFilter` from `../osclass`, or from `SHOPCLASS_CORE`, which must be Shopclass 7.1. Rebuild the translation template with `php tools/make-pot.php`.
+Run the tests with `./tests/run.sh` (PHP and Node, no database or network). They read core's `BoxFilter` from `../shopclass`, or from `SHOPCLASS_CORE`, which must be Shopclass 7.1. Rebuild the translation template with `php tools/make-pot.php`.
 
 ## Support
 

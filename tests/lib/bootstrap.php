@@ -6,7 +6,7 @@
  */
 
 /**
- * Loads the plugin's classes and core's BoxFilter (from SHOPCLASS_CORE, or ../osclass), with no
+ * Loads the plugin's classes and core's BoxFilter (from SHOPCLASS_CORE, or ../shopclass), with no
  * database and no network. The core helpers the plugin calls are stood in for here and record
  * what they were asked.
  */
@@ -20,7 +20,7 @@ error_reporting(E_ALL);
 
 define('ABS_PATH', '/x/');
 
-$core = rtrim((string) (getenv('SHOPCLASS_CORE') ?: dirname(__DIR__, 2) . '/../osclass'), '/');
+$core = rtrim((string) (getenv('SHOPCLASS_CORE') ?: dirname(__DIR__, 2) . '/../shopclass'), '/');
 $box  = core_class_file($core, 'search/query/BoxFilter.php');
 if (!is_file($box)) {
     fwrite(STDERR, "Core's BoxFilter is not at $box. Set SHOPCLASS_CORE to a Shopclass 7.1 checkout.\n");
