@@ -19,7 +19,7 @@ Adds a map of listings to the search page. Pins group into clusters, a pin opens
 
 ## Set up
 
-Open Settings → General → Map Search. The **Status** line says whether the map shows, and why not.
+Open Plugins → Map Search → Settings. The **Status** line says whether the map shows, and why not.
 
 | Setting | Default | What it does |
 | --- | --- | --- |

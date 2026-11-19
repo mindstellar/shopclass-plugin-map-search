@@ -24,6 +24,9 @@ spl_autoload_register(static function (string $class) use ($core): void {
     }
 });
 
+// Core's registry asks Plugins which plugin is running.
+require_once $core . '/oc-includes/osclass/classes/Plugins.php';
+
 harness_section("core's registry takes the settings page");
 $registry = SettingsPageRegistry::getInstance();
 $error    = '';

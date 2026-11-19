@@ -19,8 +19,7 @@ use mindstellar\mapsearch\Plugin;
 
 return array(
     'title'  => __('Map Search', 'map-search'),
-    'menu'   => 'settings',
-    'group'  => 'general',
+    'menu'   => 'plugins',
     'intro'  => __('A map of listings on the search page. Visitors move the map and press "Search this area" to see the listings in it.', 'map-search'),
     'validate' => array(Plugin::class, 'validateCentre'),
     'groups' => array(

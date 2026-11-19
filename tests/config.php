@@ -32,7 +32,7 @@ foreach ($page['groups'] as $group) {
         $fields[$field['name']] = $field;
     }
 }
-pin('menu', array('settings', 'general'), array($page['menu'], $page['group']));
+pin('menu', array('plugins', ''), array($page['menu'], $page['group'] ?? ''));
 pin('style default', Config::STYLE_DEFAULT, $fields['style_url']['default']);
 pin('max pins default', '200', $fields['max_pins']['default']);
 pin('max pins range', array('50', '500'), array($fields['max_pins']['attrs']['min'], $fields['max_pins']['attrs']['max']));
