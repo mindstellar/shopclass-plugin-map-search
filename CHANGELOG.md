@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.1.3
+
+### Changed
+- Admin pages are under Plugins → Map Search.
+
 ## 0.1.2
 
 ### Fixed
